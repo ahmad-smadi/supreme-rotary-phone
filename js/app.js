@@ -1,25 +1,6 @@
 'use strict';
 
-//todo
-//
-//form **id*****likes***( content,day-month-year)
-
-// id= inside the constructor
-// likes = as a random number between 1 and 500
-// subject : Select  (Coding, 3D printing, Cyber security, AI)
-//author,title  : textInput
-//date : dateinput
-//content : textarea
-//img
-//date format
-
-//savetolcalstorage load - render
-
-// view total number of articles
-
-//  Total articles ( array.length )
-//  ID    Title    Image    Date   likes
-const Articles = function(id,author,title,subject,content,likes,date){
+function Articles(id,author,title,subject,content,likes,date){
   this.id = id;
   this.author = author;
   this.title = title;
@@ -39,28 +20,22 @@ Articles.prototype.loadFromLocalStorage = function(){
   return JSON.parse( localStorage.getItem('Articles')) || [];
 };
 
-// Articles.prototype.removeArticle = function(id){
-//       Articles.allArticles.splice(id,1)
-//       Articles.prototype.setLocalStorage();
-//     };
-
 Articles.prototype.render = function(){
   let tbody = document.querySelector('tbody');
-  let lsData = Articles.prototype.loadFromLocalStorage();
-  for (let i in lsData){
+ 
     let tr = document.createElement('tr');
     //     tr.setAttribute('id',lsData[i].id);
     tbody.appendChild(tr);
     let idtd = document.createElement('td');
-    idtd.textContent = lsData[i].id;
+    idtd.textContent =this.id;
     tr.appendChild(idtd);
 
     let titletd = document.createElement('td');
-    titletd.textContent = lsData[i].title;
+    titletd.textContent = this.title;
     tr.appendChild(titletd);
 
     let subjecttd = document.createElement('td');
-    subjecttd.textContent = lsData[i].subject;
+    subjecttd.textContent = this.subject;
     tr.appendChild(subjecttd);
 
     let imagetd = document.createElement('td');
@@ -70,22 +45,27 @@ Articles.prototype.render = function(){
     tr.appendChild(imagetd);
 
     let dateTd = document.createElement('td');
-    dateTd.textContent = lsData[i].date;
+    dateTd.textContent = this.date;
     tr.appendChild(dateTd);
 
 
     let likestd = document.createElement('td');
-    likestd.textContent = lsData[i].likes;
+    likestd.textContent = this.likes;
     tr.appendChild(likestd);
-  }
+ 
 
   let total=document.getElementById('totalNumbers');
-  total.textContent= lsData.length;
+  total.textContent= this.allArticles;
 
 };
 
 let form = document.getElementById('form');
 form.addEventListener('submit',handleFormSubmit);
+new Articles('1','author','title','subject','content','likes','date')
+Articles.prototype.setLocalStorage();
+const arr = Articles.prototype.loadFromLocalStorage();
+console.log(arr)
+console.log(Articles.allArticles)
 
 function handleFormSubmit (e){
   e.preventDefault();
@@ -119,12 +99,19 @@ function start(){
     }
   }
   createtable();
+ 
+  console.log(lsData)
+  console.log(Articles.allArticles)
 }
 
 function createtable(){
   clearTable();
   createTableHeader();
-  Articles.prototype.render();
+
+  for (let i of Articles.allArticles ){
+    i.render();
+  }
+ 
 }
 
 function clearTable(){
